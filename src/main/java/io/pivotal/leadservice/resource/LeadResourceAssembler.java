@@ -25,17 +25,17 @@ public class LeadResourceAssembler extends ResourceAssemblerSupport<Lead, LeadRe
         resource.setEmail(lead.getEmail());
         resource.setStatus(lead.getStatus());
 
-        if(lead.getStatus().equals(LeadStatus.IN_PROGRESS)) {
+        if (lead.getStatus().equals(LeadStatus.IN_PROGRESS)) {
             resource.add(ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(LeadController.class)
-                            .approveLead(lead.getLeadId(), null)).withRel("approval"));
+                ControllerLinkBuilder.methodOn(LeadController.class)
+                    .approveLead(lead.getLeadId(), null)).withRel("approval"));
             resource.add(ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(LeadController.class)
-                            .denyLead(lead.getLeadId(), null)).withRel("denial"));
+                ControllerLinkBuilder.methodOn(LeadController.class)
+                    .denyLead(lead.getLeadId(), null)).withRel("denial"));
         }
         resource.add(ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(LeadController.class)
-                        .getLeads()).withRel("allLeads"));
+            ControllerLinkBuilder.methodOn(LeadController.class)
+                .getLeads()).withRel("allLeads"));
         return resource;
 
     }

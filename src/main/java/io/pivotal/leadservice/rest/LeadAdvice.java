@@ -14,15 +14,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Log
 
 public class LeadAdvice
-        extends ResponseEntityExceptionHandler {
+    extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = { LeadAlreadyProcessedException.class })
+        = {LeadAlreadyProcessedException.class})
     protected ResponseEntity<VndErrors.VndError> handle(
-            LeadAlreadyProcessedException ex) {
+        LeadAlreadyProcessedException ex) {
         String bodyOfResponse = "This should be application specific";
         return ResponseEntity
-                .status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(new VndErrors.VndError(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), ex.getMessage()));
+            .status(HttpStatus.METHOD_NOT_ALLOWED)
+            .body(new VndErrors.VndError(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), ex.getMessage()));
     }
 }

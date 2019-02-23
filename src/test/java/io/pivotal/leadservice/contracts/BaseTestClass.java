@@ -1,7 +1,10 @@
 package io.pivotal.leadservice.contracts;
 
+import io.restassured.RestAssured;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -10,15 +13,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureMessageVerifier
 public class BaseTestClass {
 
-//    @Autowired
-//    protected WebTestClient webTestClient;
-//
-//    @Before
-//    public void setup() {
-//        StandaloneMockMvcBuilder standaloneMockMvcBuilder
-//                = MockMvcBuilders.standaloneSetup(leadController);
-//        RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
-//        WebA
-//        RestAssuredWebTestClient.webAppContextSetup();
-//    }
+    @LocalServerPort
+    int port;
+
+    @Before
+    public void setup() {
+        RestAssured.baseURI = "http://localhost:" + this.port;
+    }
+
 }

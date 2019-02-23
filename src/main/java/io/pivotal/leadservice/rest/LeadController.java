@@ -33,9 +33,9 @@ public class LeadController {
         Resources<LeadResource> resources = new Resources<>(assembler.toResources(allLeads));
 
         resources.add(ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(LeadController.class)
-                        .getLeads())
-                .withSelfRel());
+            ControllerLinkBuilder.methodOn(LeadController.class)
+                .getLeads())
+            .withSelfRel());
 
         return ResponseEntity.ok(resources);
     }

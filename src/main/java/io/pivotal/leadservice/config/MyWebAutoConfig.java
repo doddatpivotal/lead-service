@@ -17,7 +17,7 @@ public class MyWebAutoConfig implements WebMvcConfigurer {
         for (HttpMessageConverter converter : converters) {
             if (converter instanceof MappingJackson2HttpMessageConverter) {
                 MappingJackson2HttpMessageConverter jacksonConverter =
-                        ((MappingJackson2HttpMessageConverter) converter);
+                    ((MappingJackson2HttpMessageConverter) converter);
 
                 if (objectMapper == null) {
                     objectMapper = jacksonConverter.getObjectMapper();

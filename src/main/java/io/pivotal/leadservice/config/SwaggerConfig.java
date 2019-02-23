@@ -30,26 +30,26 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("io.pivotal.leadservice.rest"))
-                .paths(PathSelectors.any())
-                .build()
-                .useDefaultResponseMessages(false)
-                .alternateTypeRules(
-                        AlternateTypeRules.newRule(typeResolver.resolve(List.class, Link.class),
-                                typeResolver.resolve(Object.class)))
-                .globalResponseMessage(RequestMethod.GET,
-                        newArrayList(new ResponseMessageBuilder()
-                                        .code(500)
-                                        .message("Internal Server Error!")
-                                        .responseModel(new ModelRef("VndError"))
-                                        .build(),
-                                new ResponseMessageBuilder()
-                                        .code(403)
-                                        .message("Forbidden!")
-                                        .build()))
-                .additionalModels(typeResolver.resolve(VndErrors.VndError.class))
-                .apiInfo(apiInfo());
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("io.pivotal.leadservice.rest"))
+            .paths(PathSelectors.any())
+            .build()
+            .useDefaultResponseMessages(false)
+            .alternateTypeRules(
+                AlternateTypeRules.newRule(typeResolver.resolve(List.class, Link.class),
+                    typeResolver.resolve(Object.class)))
+            .globalResponseMessage(RequestMethod.GET,
+                newArrayList(new ResponseMessageBuilder()
+                        .code(500)
+                        .message("Internal Server Error!")
+                        .responseModel(new ModelRef("VndError"))
+                        .build(),
+                    new ResponseMessageBuilder()
+                        .code(403)
+                        .message("Forbidden!")
+                        .build()))
+            .additionalModels(typeResolver.resolve(VndErrors.VndError.class))
+            .apiInfo(apiInfo());
     }
 
     @Autowired
@@ -57,12 +57,12 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Leads Rest API",
-                "A sample API for marketing leads.",
-                "1.0",
-                "Terms of service",
-                new Contact("Dodd Pfeffer", "https://leads-service.cfapps.io", "dpfeffer@pivotal.io"),
-                "Apache 2", "https://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
+            "Leads Rest API",
+            "A sample API for marketing leads.",
+            "1.0",
+            "Terms of service",
+            new Contact("Dodd Pfeffer", "https://leads-service.cfapps.io", "dpfeffer@pivotal.io"),
+            "Apache 2", "https://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
 
     }
 }
