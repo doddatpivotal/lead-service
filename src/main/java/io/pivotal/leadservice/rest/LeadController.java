@@ -5,15 +5,17 @@ import io.pivotal.leadservice.model.LeadApproval;
 import io.pivotal.leadservice.model.LeadDenial;
 import io.pivotal.leadservice.model.LeadStatus;
 import io.pivotal.leadservice.repository.LeadRepository;
-import io.pivotal.leadservice.resource.LeadResource;
 import io.pivotal.leadservice.resource.LeadResourceAssembler;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController()
@@ -30,9 +32,9 @@ public class LeadController {
     }
 
     @GetMapping(produces = "application/hal+json;charset=UTF-8")
-    public ResponseEntity<Resources<LeadResource>> getLeads() {
+    public ResponseEntity<Resources<Resource<Lead>>> getLeads() {
         List<Lead> allLeads = this.leadRepository.findAll();
-        Resources<LeadResource> resources = new Resources<>(assembler.toResources(allLeads));
+        Resources<Resource<Lead>> resources = new Resources<>(assembler.toResources(allLeads));
 
         resources.add(ControllerLinkBuilder.linkTo(
             ControllerLinkBuilder.methodOn(LeadController.class)
@@ -43,20 +45,20 @@ public class LeadController {
     }
 
     @GetMapping(value = "/{leadId}")
-    public ResponseEntity<LeadResource> getLeadByLeadId(@PathVariable long leadId) {
-        Lead lead = this.leadRepository.getOne(leadId);
+    public ResponseEntity<Resource<Lead>> getLeadByLeadId(@PathVariable long leadId) {
+        Lead lead = leadRepository.findById(leadId).orElseThrow(() -> new LeadNotFoundException(leadId));
         return ResponseEntity.ok(assembler.toResource(lead));
     }
 
     @PostMapping()
-    public ResponseEntity<LeadResource> createLead(@Valid @RequestBody Lead lead) {
+    public ResponseEntity<Lead> createLead(@Valid @RequestBody Lead lead) {
         lead.setStatus(LeadStatus.IN_PROGRESS);
-        return ResponseEntity.ok(assembler.toResource(leadRepository.save(lead)));
+        return new ResponseEntity(assembler.toResource(leadRepository.save(lead)), HttpStatus.CREATED);
 
     }
 
     @PostMapping(value = "/{leadId}/approval")
-    public ResponseEntity<LeadResource> approveLead(@PathVariable long leadId, @RequestBody LeadApproval leadApproval) {
+    public ResponseEntity<Resource<Lead>> approveLead(@PathVariable long leadId, @RequestBody LeadApproval leadApproval) {
 
         Lead lead = leadRepository.findById(leadId).orElseThrow(() -> new LeadNotFoundException(leadId));
 
@@ -74,7 +76,7 @@ public class LeadController {
     }
 
     @PostMapping("/{leadId}/denial")
-    public ResponseEntity<LeadResource> denyLead(@PathVariable long leadId, @RequestBody LeadDenial leadDenial) {
+    public ResponseEntity<Resource<Lead>> denyLead(@PathVariable long leadId, @RequestBody LeadDenial leadDenial) {
 
         Lead lead = leadRepository.findById(leadId).orElseThrow(() -> new LeadNotFoundException(leadId));
 

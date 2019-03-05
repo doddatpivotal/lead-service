@@ -1,0 +1,30 @@
+= Getting started with Spring REST Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+== Overview
+=== HTTP Verbs
+=== HTTP Status Codes
+=== Errors
+=== Hypermedia
+
+== Resources
+
+=== Lead
+==== Creating a Lead
+
+.curl sample request
+include::{snippets}/create-lead-example/curl-request.adoc[]
+.HTTP Response
+include::{snippets}/create-lead-example/http-response.adoc[]
+.Request fields
+include::{snippets}/create-lead-example/request-fields.adoc[]
+.Response fields
+include::{snippets}/create-lead-example/response-fields.adoc[]
+.Links
+include::{snippets}/create-lead-example/links.adoc[]
+

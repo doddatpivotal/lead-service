@@ -23,14 +23,19 @@ Contract.make {
     }
 
     response {
-        status OK()
+        status CREATED()
         body(
-            leadId: anyInteger(),
             status: "IN_PROGRESS",
-            name: fromRequest().body('$.name')
+            name: fromRequest().body('$.name'),
+            _links: [
+                self: [
+                    href: $(consumer('http://localhost:8081/lead/3'), producer(regex(/^(https?:\/\/.*):(\d*)\/?(.*)$/)))
+                ]
+            ]
         )
         headers {
             contentType "application/hal+json;charset=UTF-8"
         }
     }
 }
+//$.['_links']['approval']['href']

@@ -18,7 +18,6 @@ Contract.make {
         body([
             _embedded: [
                 leads: [
-                    leadId      : $(anyInteger()),
                     name        : $(anyAlphaUnicode()),
                     addressLine1: $(regex(/^[a-zA-Z0-9 ]+$/)),
                     city        : $(anyAlphaUnicode()),
