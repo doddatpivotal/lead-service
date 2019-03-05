@@ -24,10 +24,10 @@ public class LeadServiceApplication {
     @Bean
     CommandLineRunner loadData(LeadRepository repository) {
         return commandLineRunner -> {
-            Stream.of("Doug:123 Main Street:Philadelphia:PA:19044:doug@test.mail.com",
-                    "Martin:897 South Street:Trenton:NJ:08601:martin@test.mail.com").forEach(token -> {
+            Stream.of("Doug:123 Main Street::Philadelphia:PA:19044:doug@test.mail.com",
+                    "Martin:897 South Street:Apt 2:Trenton:NJ:08601:martin@test.mail.com").forEach(token -> {
                 String[] split = token.split(":");
-                repository.save(new Lead(null, split[0], split[1], split[2], split[3], split[4], split[5], LeadStatus.IN_PROGRESS));
+                repository.save(new Lead(null, split[0], split[1], split[2], split[3], split[4], split[5], split[6], LeadStatus.IN_PROGRESS));
             });
             repository.findAll().forEach(lead -> log.info(lead.toString()));
         };

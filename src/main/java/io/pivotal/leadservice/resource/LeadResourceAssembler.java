@@ -5,7 +5,9 @@ import io.pivotal.leadservice.model.LeadStatus;
 import io.pivotal.leadservice.rest.LeadController;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LeadResourceAssembler extends ResourceAssemblerSupport<Lead, LeadResource> {
 
     public LeadResourceAssembler() {

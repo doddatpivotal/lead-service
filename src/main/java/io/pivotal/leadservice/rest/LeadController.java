@@ -13,6 +13,7 @@ import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController()
@@ -21,10 +22,11 @@ public class LeadController {
 
 
     private LeadRepository leadRepository;
-    private LeadResourceAssembler assembler = new LeadResourceAssembler();
+    private LeadResourceAssembler assembler;
 
-    public LeadController(LeadRepository leadRepository) {
+    public LeadController(LeadRepository leadRepository, LeadResourceAssembler assembler) {
         this.leadRepository = leadRepository;
+        this.assembler = assembler;
     }
 
     @GetMapping(produces = "application/hal+json;charset=UTF-8")
@@ -47,7 +49,7 @@ public class LeadController {
     }
 
     @PostMapping()
-    public ResponseEntity<LeadResource> createLead(@RequestBody Lead lead) {
+    public ResponseEntity<LeadResource> createLead(@Valid @RequestBody Lead lead) {
         lead.setStatus(LeadStatus.IN_PROGRESS);
         return ResponseEntity.ok(assembler.toResource(leadRepository.save(lead)));
 

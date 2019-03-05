@@ -3,7 +3,7 @@ package contracts.operatorDashboard
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    name "should return results"
+    name "should return leads"
 
     request {
         method GET()
