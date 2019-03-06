@@ -8,9 +8,20 @@
 
 == Overview
 === HTTP Verbs
+
+Here is context that you can use to describe the verbs your API uses.
+
 === HTTP Status Codes
+
+This section would describe the status codes of your api.
+
 === Errors
+
+All errors are being returned following the vnd.error format
+
 === Hypermedia
+
+Follow links for next action
 
 == Resources
 
@@ -27,4 +38,12 @@ include::{snippets}/create-lead-example/request-fields.adoc[]
 include::{snippets}/create-lead-example/response-fields.adoc[]
 .Links
 include::{snippets}/create-lead-example/links.adoc[]
+
+==== List Leads
+
+==== Retrieving Leads
+
+==== Approving a Lead
+
+==== Denying a Lead
 

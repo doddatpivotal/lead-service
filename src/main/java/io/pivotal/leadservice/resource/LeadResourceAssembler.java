@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 @Component
 public class LeadResourceAssembler implements ResourceAssembler<Lead, Resource<Lead>> {
 
@@ -23,19 +25,16 @@ public class LeadResourceAssembler implements ResourceAssembler<Lead, Resource<L
         Resource<Lead> resource = new Resource<>(lead);
 
         if (lead.getStatus().equals(LeadStatus.IN_PROGRESS)) {
-            resource.add(ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(LeadController.class)
+            resource.add(linkTo(methodOn(LeadController.class)
                     .approveLead(lead.getLeadId(), null)).withRel("approval"));
-            resource.add(ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(LeadController.class)
+            resource.add(linkTo(methodOn(LeadController.class)
                     .denyLead(lead.getLeadId(), null)).withRel("denial"));
         }
-        resource.add(ControllerLinkBuilder.linkTo(
-            ControllerLinkBuilder.methodOn(LeadController.class)
+
+        resource.add(linkTo(methodOn(LeadController.class)
                 .getLeadByLeadId(lead.getLeadId())).withSelfRel());
 
-        resource.add(ControllerLinkBuilder.linkTo(
-            ControllerLinkBuilder.methodOn(LeadController.class)
+        resource.add(linkTo(methodOn(LeadController.class)
                 .getLeads()).withRel("allLeads"));
 
         return resource;
@@ -43,12 +42,21 @@ public class LeadResourceAssembler implements ResourceAssembler<Lead, Resource<L
 
     public Resources<Resource<Lead>> toResources(List<Lead> leads) {
 
-        List<Resource<Lead>> leadResources = new ArrayList<>();
+        List<Resource<Lead>> leadResourceList = new ArrayList<>();
+
         leads.forEach(lead -> {
-            leadResources.add(this.toResource(lead));
+            leadResourceList.add(this.toResource(lead));
         });
 
-        return new Resources<>(leadResources);
+        Resources<Resource<Lead>> resources = new Resources<>(leadResourceList);
+
+        resources.add(linkTo(methodOn(LeadController.class)
+                .createLead(null)).withRel("create"));
+
+        resources.add(linkTo(methodOn(LeadController.class)
+            .getLeads()).withSelfRel());
+
+        return resources;
     }
 
 }

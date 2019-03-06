@@ -9,13 +9,11 @@ import io.pivotal.leadservice.resource.LeadResourceAssembler;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController()
@@ -34,14 +32,7 @@ public class LeadController {
     @GetMapping(produces = "application/hal+json;charset=UTF-8")
     public ResponseEntity<Resources<Resource<Lead>>> getLeads() {
         List<Lead> allLeads = this.leadRepository.findAll();
-        Resources<Resource<Lead>> resources = new Resources<>(assembler.toResources(allLeads));
-
-        resources.add(ControllerLinkBuilder.linkTo(
-            ControllerLinkBuilder.methodOn(LeadController.class)
-                .getLeads())
-            .withSelfRel());
-
-        return ResponseEntity.ok(resources);
+        return ResponseEntity.ok(assembler.toResources(allLeads));
     }
 
     @GetMapping(value = "/{leadId}")
@@ -51,7 +42,7 @@ public class LeadController {
     }
 
     @PostMapping()
-    public ResponseEntity<Lead> createLead(@Valid @RequestBody Lead lead) {
+    public ResponseEntity<Resource<Lead>> createLead(@Valid @RequestBody Lead lead) {
         lead.setStatus(LeadStatus.IN_PROGRESS);
         return new ResponseEntity(assembler.toResource(leadRepository.save(lead)), HttpStatus.CREATED);
 
@@ -68,11 +59,6 @@ public class LeadController {
         }
 
         throw new LeadAlreadyProcessedException(lead.getLeadId(), lead.getStatus());
-    }
-
-    @RequestMapping(value = "/{leadId}/approval", method = {RequestMethod.HEAD})
-    public ResponseEntity<ResourceSupport> approveLeadHead(@PathVariable long leadId) {
-        return ResponseEntity.ok(null);
     }
 
     @PostMapping("/{leadId}/denial")
@@ -94,5 +80,10 @@ public class LeadController {
         return ResponseEntity.ok(null);
     }
 
+
+    @RequestMapping(value = "/{leadId}/approval", method = {RequestMethod.HEAD})
+    public ResponseEntity<ResourceSupport> approveLeadHead(@PathVariable long leadId) {
+        return ResponseEntity.ok(null);
+    }
 
 }

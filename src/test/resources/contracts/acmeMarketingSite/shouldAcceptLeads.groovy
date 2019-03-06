@@ -38,4 +38,3 @@ Contract.make {
         }
     }
 }
-//$.['_links']['approval']['href']
